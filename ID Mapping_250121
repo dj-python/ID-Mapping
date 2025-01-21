@@ -1,0 +1,198 @@
+from machine import Pin, I2C
+import time
+import W5500_EVB_PICO as W5500
+
+class Sensor_ID_read:
+    def __init__(self):\
+        # I2C 0,1번 초기화
+        self.i2c_0 = I2C(0, scl=Pin(1), sda=Pin(0), freq=400000)
+        self.i2c_1 = I2C(1, scl=Pin(3), sda=Pin(2), freq=400000)
+
+        # I2C 버스에 연결된 장치 주소 스캔
+        self.devices = self.i2c_0.scan()
+        self.devices = self.i2c_1.scan()
+
+        # region MainPC 에서 변수로 입력받을 레지스터, 데이터 주소
+        self.adr_write1 = None
+        self.adr_write2 = None
+        self.adr_write3 = None
+        self.adr_write4 = None
+        self.adr_write5 = None
+        self.adr_write6 = None
+        self.adr_write7 = None
+        self.adr_write8 = None
+        self.adr_write9 = None
+        self.adr_write10 = None
+        self.adr_read1 = None
+        self.adr_read2 = None
+        self.adr_read3 = None
+        self.adr_read4 = None
+        self.adr_read5 = None
+        self.adr_read6 = None
+        self.adr_read7 = None
+
+        # 16비트 data split을 위한 리스트 생성.
+        self.adr_list = []
+
+        self.high_adr_write1 = None
+        self.low_adr_write1 = None
+        self.high_adr_write2 = None
+        self.low_adr_write2 = None
+        self.high_adr_write3 = None
+        self.low_adr_write3 = None
+        self.high_adr_write4 = None
+        self.low_adr_write4 = None
+        self.high_adr_write5 = None
+        self.low_adr_write5 = None
+        self.high_adr_write6 = None
+        self.low_adr_write6 = None
+        self.high_adr_write7 = None
+        self.low_adr_write7 = None
+        self.high_adr_read1 = None
+        self.low_adr_read1 = None
+        self.high_adr_read2 = None
+        self.low_adr_read2 = None
+        self.high_adr_read3 = None
+        self.low_adr_read3 = None
+        self.high_adr_read4 = None
+        self.low_adr_read4 = None
+        self.high_adr_read5 = None
+        self.low_adr_read5 = None
+        self.high_adr_read6 = None
+        self.low_adr_read6 = None
+        self.high_adr_read7 = None
+        self.low_adr_read7 = None
+
+        self.data_write1 = None
+        self.data_write2 = None
+        self.data_write3 = None
+        self.data_write4 = None
+        self.data_write5 = None
+        self.data_write6 = None
+        self.data_write7 = None
+        self.data_read1 = None
+        self.data_read2 = None
+        self.data_read3 = None
+        self.data_read4 = None
+        self.data_read5 = None
+        self.data_read6 = None
+        self.data_read7 = None
+
+        # Main PC로부터 받은 바코드 정보
+        self.barcode1 = None
+        self.barcode2 = None
+        self.barcode3 = None
+        self.barcode4 = None
+
+
+        # 취득한 Sensor ID 변수 : 두번 확인해서 비교해야 하므로 2개씩 할당
+        self.SensorID1 = None
+        self.SensorID2 = None
+        self.SensorID3 = None
+        self.SensorID4 = None
+        self.SensorID1_1 = None
+        self.SensorID2_1 = None
+        self.SensorID3_1 = None
+        self.SensorID4_1 = None
+
+        # MainPC 에서 변수로 입력받을 Slave address
+        self.Slave_sensor = None
+        self.Slave_eeprom = None
+        self.Slave_AFDriverIC = None
+        self.Slave_OISDriverIC = None
+        # end region
+
+        # 연속실행 변수
+        self.isExecProcess = False
+
+
+
+        self.gpioIn_ipSel1 = Pin(22, Pin.IN)
+        self.gpioIn_ipSel2 = Pin(26, Pin.IN)
+        self.gpioIn_ipSel4 = Pin(27, Pin.IN)
+
+        # region Init Ethernet
+        ipAddress = ''
+        portNumber = 0
+        if self.gpioIn_ipSel1.value() == 0 and self.gpioIn_ipSel2.value() == 0 and self.gpioIn_ipSel4.value() == 0:
+            ipAddress = '166.79.25.110'
+            portNumber = 6571
+        elif self.gpioIn_ipSel1.value() == 0 and self.gpioIn_ipSel2.value() == 0 and self.gpioIn_ipSel4.value() == 1:
+            ipAddress = '166.79.25.111'
+            portNumber = 6572
+        elif self.gpioIn_ipSel1.value() == 0 and self.gpioIn_ipSel2.value() == 1 and self.gpioIn_ipSel4.value() == 0:
+            ipAddress = '166.79.25.112'
+            portNumber = 6573
+        elif self.gpioIn_ipSel1.value() == 0 and self.gpioIn_ipSel2.value() == 1 and self.gpioIn_ipSel4.value() == 1:
+            ipAddress = '166.79.25.113'
+            portNumber = 6574
+        elif self.gpioIn_ipSel1.value() == 1 and self.gpioIn_ipSel2.value() == 0 and self.gpioIn_ipSel4.value() == 0:
+            ipAddress = '166.79.25.114'
+            portNumber = 6575
+
+        W5500.init(ipAddress=ipAddress, portNumber=portNumber)
+        self.UDP_CLIENT = ('166.79.25.100', portNumber)
+        # endregion
+
+
+    def func_10msce(self):
+        message, address = W5500.readMessage()
+        if message is not None:
+            self.rxMessage = message.decode('utf-8')
+            print(address, self.rxMessage)
+
+            # region Barcode 정보 수신
+            if self.rxMessage[1:3] == '11' and self.rxMessage[3:5] == '01':
+                self.barcode1 = self.rxMessage[5:]
+            elif self.rxMessage[1:3] == '11' and self.rxMessage[3:5] == '02':
+                self.barcode2 = self.rxMessage[5:]
+            elif self.rxMessage[1:3] == '11' and self.rxMessage[3:5] == '03' :
+                self.barcode3 = self.rxMessage[5:]
+            elif self.rxMessage[1:3] == '11' and self.rxMessage[3:5] == '04' :
+                self.barcode4 = self.rxMessage[5:]
+
+            # region slave address 정보 수신
+            elif self.rxMessage[1:3] == '13' and self.rxMessage[3:5] == '01' :
+                self.Slave_eeprom = self.rxMessage[5:]
+            elif self.rxMessage[1:3] == '13' and self.rxMessage[3:5] == '02' :
+                self.Slave_sensor = self.rxMessage[5:]
+            elif self.rxMessage[1:3] == '13' and self.rxMessage[3:5] == '03' :
+                self.Slave_AFDriverIC = self.rxMessage[5:]
+            elif self.rxMessage[1:3] == '13' and self.rxMessage[3:5] == '04':
+                self.Slave_OISDriverIC = self.rxMessage[5:]
+
+    def func_25msce(self):
+        if self.
+
+
+
+    def split_16bit_data(data_list):
+        result = []
+
+        for value in data_list:
+            if value is not None:
+                high_byte = (value >> 8) & 0xFF
+                low_byte = value & 0xFF
+                result.append((high_byte, low_byte))
+            return result
+
+
+
+    # Region 16비트 데이터를 상위와 하위 바이트로 분리
+    def data_devide(self):
+         try:
+             self.high_adr_write1 = (self.adr_write1 >>8 ) & 0xFF
+             self.low_adr_write1 = self.adr_write1 & 0xFF
+         except Exception as e:
+             print("I2C 통신 오류", e)
+
+    def data_HighLow(self):
+        try:
+
+
+
+    # Region Sensor streaming
+    def Sensor_on(self):
+        self.i2c_0.writeto(self.sensor_address, b'\x0100\x01')      # b가 의미하는게 뭔지,
+        time.sleep_ms(5)
+        self.i2c_0.writeto(self.sensor_address, )
