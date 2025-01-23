@@ -1,0 +1,41 @@
+=========================================
+This Area is for data input of ID Mapping
+=========================================
+
+Sensor Slave address = 0x
+EEPROM Slave address = 0x
+AF Driver Slave addresss = 0x
+OIS Driver Slave address = 0x
+
+EEPROM Write protection resister address = 0x
+EEPROM Write protection disable data = 0x
+EEPROM Write protection enable data = 0x
+
+Sensor Streaming Resister Address 1 = 0x
+Sensor Streaming Resister Address 2 = 0x
+Sensor Streaming Resister Address 3 = 0x
+Sensor Streaming Resister Address 4 = 0x
+Sensor Streaming Resister Address 5 = 0x
+
+Sensor Streaming Write data 1 = 0x
+Sensor Streaming Write data 2 = 0x
+Sensor Streaming Write data 3 = 0x
+Sensor Streaming Write data 4 = 0x
+Sensor Streaming Write data 5 = 0x
+
+Sensor OTP Read Resister Address = 0x
+
+Sensor Reading Resister Address 1 = 0x
+Sensor Reading Resister Address 2 = 0x
+Sensor Reading Resister Address 3 = 0x
+Sensor Reading Resister Address 4 = 0x
+Sensor Reading Resister Address 5 = 0x
+
+EEPROM Writing Resister Address 1 = 0x
+EEPROM Writing Resister Address 2 = 0x
+EEPROM Writing Resister Address 3 = 0x
+EEPROM Writing Resister Address 4 = 0x
+EEPROM Writing Resister Address 5 = 0x
+EEPROM Writing Resister Address 6(Barocde) = 0x
+
+
