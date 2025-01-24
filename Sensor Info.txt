@@ -2,40 +2,43 @@
 This Area is for data input of ID Mapping
 =========================================
 
-Sensor Slave address = 0x
-EEPROM Slave address = 0x
-AF Driver Slave addresss = 0x
-OIS Driver Slave address = 0x
+4.Sensor Slave address = 0x20
+5.EEPROM Slave address = 0xA0
+6.AF Driver Slave addresss = 0x
+7.OIS Driver Slave address = 0x
 
-EEPROM Write protection resister address = 0x
-EEPROM Write protection disable data = 0x
-EEPROM Write protection enable data = 0x
+9.EEPROM Write protection resister address = 0xA000
+10.EEPROM Write protection disable data = 0x00
+11.EEPROM Write protection enable data = 0x0E
 
-Sensor Streaming Resister Address 1 = 0x
-Sensor Streaming Resister Address 2 = 0x
-Sensor Streaming Resister Address 3 = 0x
-Sensor Streaming Resister Address 4 = 0x
-Sensor Streaming Resister Address 5 = 0x
+13.Sensor Streaming Resister Address 1 = 0x0100
+14.Sensor Streaming Resister Address 2 = 0x0A02
+15.Sensor Streaming Resister Address 3 = 0x0A00
+16.Sensor Streaming Resister Address 4 = 0x
+17.Sensor Streaming Resister Address 5 = 0x
 
-Sensor Streaming Write data 1 = 0x
-Sensor Streaming Write data 2 = 0x
-Sensor Streaming Write data 3 = 0x
-Sensor Streaming Write data 4 = 0x
-Sensor Streaming Write data 5 = 0x
+19.Sensor Streaming Write data 1 = 0x01
+20.Sensor Streaming Write data 2 = 0x00
+21.Sensor Streaming Write data 3 = 0x01
+22.Sensor Streaming Write data 4 = 0x
+23.Sensor Streaming Write data 5 = 0x
 
-Sensor OTP Read Resister Address = 0x
+25.Sensor OTP Read Resister Address = 0x0A3C
 
-Sensor Reading Resister Address 1 = 0x
-Sensor Reading Resister Address 2 = 0x
-Sensor Reading Resister Address 3 = 0x
-Sensor Reading Resister Address 4 = 0x
-Sensor Reading Resister Address 5 = 0x
+27.Sensor Reading Resister Address 1 = 0x0019
+28.Sensor Reading Resister Address 2 = 0x0002
+29.Sensor Reading Resister Address 3 = 0x000D
+30.Sensor Reading Resister Address 4 = 0x0000
+31.Sensor Reading Resister Address 5 = 0x0016
+32.Sensor Reading Resister Address 6 = 0x0018
+33.Sensor Reading Resister Address 7 = 0x
 
-EEPROM Writing Resister Address 1 = 0x
-EEPROM Writing Resister Address 2 = 0x
-EEPROM Writing Resister Address 3 = 0x
-EEPROM Writing Resister Address 4 = 0x
-EEPROM Writing Resister Address 5 = 0x
-EEPROM Writing Resister Address 6(Barocde) = 0x
+35.EEPROM Writing Resister Address 1 = 0x00B8
+36.EEPROM Writing Resister Address 2 = 0x00BC
+37.EEPROM Writing Resister Address 3 = 0x00BD
+38.EEPROM Writing Resister Address 4 = 0x00C0
+39.EEPROM Writing Resister Address 5 = 0x
+40.EEPROM Writing Resister Address 6(Barocde) = 0x7D31
+
 
 
