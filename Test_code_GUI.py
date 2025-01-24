@@ -153,23 +153,21 @@ class MainGUI:
         self.file_open.close()
         print(self.All_Info_data)
 
+        self.Slave_sensor = self.All_Info_data[4][-5:-1]
+        self.Slave_eeprom = self.All_Info_data[5][-5:-1]
+        self.Slave_AFDriverIC = self.All_Info_data[6][-5:-1]
+        self.Slave_OISDriverIC = self.All_Info_data[7][-5:-1]
+        self.Slave_str = self.Slave_sensor + self.Slave_eeprom + self.Slave_AFDriverIC + self.Slave_OISDriverIC
 
-    def send_slave(self):
-        self.Slave_sensor =
-        self.Slave_eeprom =
-        self.Slave_AFDriverIC =
-        self.Slave_OISDriverIC =
+        self.adr_write1 = self.All_Info_data[13][-5:-1]
+        self.adr_write2 = self.All_Info_data[14][-5:-1]
+        self.adr_write3 = self.All_Info_data[15][-5:-1]
+        self.adr_write4 = self.All_Info_data[16][-5:-1]
+        self.adr_write5 = self.All_Info_data[17][-5:-1]
 
         sender = UDPReceiver(self.writeCardIp, 6561)
         sender.senddata(self.writeCardIpPort, self.Slave_str)
 
-    def send_sensor_res(self):
-        self.adr_write1 =
-        self.adr_write2 =
-        self.adr_write3 =
-        self.adr_write4 =
-        self.adr_write5 =
-        pass
 
     def send_EEPROM(self):
         pass
