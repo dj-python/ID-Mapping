@@ -1,0 +1,41 @@
+class SensorInfoProcessor:
+    def __init__(self, data):
+        self.All_Info_data = data
+        self.Slave_sensor = None
+        self.Slave_eeprom = None
+        self.Slave_AFDriverIC = None
+
+    def extract_data(self, index):
+        if '0x' in self.All_Info_data[index]:
+            start_index = self.All_Info_data[index].index('0x')
+            extracted_value = self.All_Info_data[index][start_index:start_index + 2]
+            print(extracted_value)
+            return self.All_Info_data[index][-5:-1]
+        else:
+            print('조건이 충족되지 않았습니다')
+            return None
+
+    def process_data(self):
+        self.Slave_sensor = self.extract_data(4)
+        self.Slave_eeprom = self.extract_data(5)
+        self.Slave_AFDriverIC = self.extract_data(6)
+
+# 사용 예제
+data = [
+    # 예시 데이터 추가
+    "1. Example line 1",
+    "2. Example line 2",
+    "3. Example line 3",
+    "4. Example line 4",
+    "4.Sensor Slave address = 0x20",
+    "5.EEPROM Slave address = 0xA0",
+    "6.AF Driver Slave addresss = 0x",
+    "7.OIS Driver Slave address = 0x"
+]
+
+processor = SensorInfoProcessor(data)
+processor.process_data()
+
+print("Slave_sensor:", processor.Slave_sensor)
+print("Slave_eeprom:", processor.Slave_eeprom)
+print("Slave_AFDriverIC:", 
