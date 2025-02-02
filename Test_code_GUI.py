@@ -5,6 +5,9 @@ import sys
 from PyQt5.QtCore import pyqtSignal, QThread
 import socket
 
+
+# 이 프로그램은 TCP 통신의 서버임.
+
 class UDPReceiver(QThread):
     data_received = pyqtSignal(str)  # 데이터 수신 시그널 정의
 
@@ -12,25 +15,40 @@ class UDPReceiver(QThread):
         super().__init__()
         self.ip = ip
         self.port = port
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.bind(('166.79.25.100', self.port))  # 12345 포트에서 수신
-        self._running = True
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.bind(('166.79.25.100', self.port))                     # 12345 포트에서 수신
+        self.sock.listen(1)                                              # 연결 대기
+        self.conn = None
 
-    def run(self):
+    def receive_data(self):
+        self.conn, addr = self.sock.accept()                                     # 클라이언트 연결 수락
         while self._running:
             try :
-                data, _ = self.sock.recvfrom(1024)  # 최대 1024바이트 수신
-                self.data_received.emit(data.decode('utf-8'))  # 데이터 수신 시그널 발생
+                data = self.conn.recv(1024)                           # 최대 1024바이트 수신
+                if not data :
+                    break
+                self.data_received.emit(data.decode('utf-8'))                # 데이터 수신 시그널 발생
             except Exception as e :
                 self.data_received.emit(f"Error: {str(e)}")
             time.sleep(0.1)
+        self.conn.close()
 
     def stop(self):
         self._running = False
+        if self.conn:
+            self.conn.close()
         self.sock.close()
 
-    def senddata(self, target: tuple, msg: str) -> None:
-        self.sock.sendto(msg.encode(), target)
+    def send_data(self, target: tuple, msg: str) -> None:
+        try :
+            temp_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)           # 서버 소켓과 데이터 전송 소켓을 분리하기 위해 별도 변수 사용.
+            temp_sock.connect(target)
+            temp_sock.sendall(msg.encode())
+            temp_sock.close()
+        except Exception as e :
+            print(f"Error : {str(e)}")
+
+
 
 
 class MainGUI:
@@ -146,12 +164,36 @@ class MainGUI:
         self.file_open = None
         self.All_Info_data = None
 
+        sys.exit(app.exec_())
+
+
     # txt 파일로부터 읽어온 Info 리스트를 각 변수에 할당
     def read_Sensor_info(self):
         self.file_open = open('Sensor Info.txt', 'r')
         self.All_Info_data = self.file_open.readlines()
         self.file_open.close()
         print(self.All_Info_data)
+
+    # 텍스트 파일에서 '0x' 이후의 문자열만 추출하여 변수에 저장
+        if '0x' in self.All_Info_data[4]:
+            # '0x' 이후의 두 문자 추출
+            start_index1 = self.All_Info_data[4].index('0x')
+            d = self.All_Info_data[4][start_index1:start_index1 + 2]
+            print(d)
+            self.Slave_sensor = self.All_Info_data[4][-5:-1]
+        else:
+            print('조건이 충족되지 않았습니다')
+
+        if '0x' in self.All_Info_data[5]:
+            # '0x' 이후의 두 문자 추출
+            start_index2 = self.All_Info_data[5].index('0x')
+            d = self.All_Info_data[5][start_index2:start_index2 + 2]
+            print(d)
+            self.Slave_eeprom = self.All_Info_data[5][-5:-1]
+        else:
+            print('조건이 충족되지 않았습니다')
+
+
 
         self.Slave_sensor = self.All_Info_data[4][-5:-1]
         self.Slave_eeprom = self.All_Info_data[5][-5:-1]
@@ -204,4 +246,3 @@ class MainGUI:
 
     def update_widgets(self):
         self.MainWindow.setWindowTitle('PyQt5 GUI')
-
