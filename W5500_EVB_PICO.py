@@ -1,3 +1,4 @@
+
 from machine import Pin, SPI
 import time
 import network
@@ -24,7 +25,7 @@ def init(ipAddress: str, gateway : str, server_ip : str, server_port: int) -> No
     print(f"[*] Connected to TCP Server: {server_ip} : {server_port}")
 
 # 서버로 메시지 전송
-def sendMessage(msg:str) -> None:
+def readMessage() -> None:
     global tcpSocket
 
     try :
@@ -33,8 +34,18 @@ def sendMessage(msg:str) -> None:
             return data.decode()
     except Exception as e:
         print(f"[-] Receive Error: {str(e)}")
-
     return None
+
+def sendMessage(msg: str) -> None:
+    global tcpSocket
+
+    try :
+        # 메시지 전송
+        tcpSocket.sendall(msg.encode())
+        print(f"[*] Message sent: {msg}")
+    except Exception as e:
+        print(f"[-] send Error: {str(e)}")
+
 
 # 소켓 종료
 def closeSocket() -> None:
@@ -43,4 +54,3 @@ def closeSocket() -> None:
     if tcpSocket:
         tcpSocket.close()
         print("[*] Disconnected from TCP Server")
-
