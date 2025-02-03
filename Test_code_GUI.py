@@ -211,9 +211,9 @@ class MainGUI:
         self.ui.textBrowser_model_data.append('Sensor Streaming Data 4' + self.Sensor_Streaming_Write_Data4)
         self.ui.textBrowser_model_data.append('Sensor Streaming Data 5' + self.Sensor_Streaming_Write_Data5)
 
-        self.Slave_str = self.Slave_sensor + self.Slave_eeprom + self.Slave_AFDriverIC + self.Slave_OISDriverIC
-        self.Sensor_Streaming_Resister = self.Sensor_Streaming_Resister_Address1 + self.Sensor_Streaming_Resister_Address2 + self.Sensor_Streaming_Resister_Address3 + self.Sensor_Streaming_Resister_Address4 + self.Sensor_Streaming_Resister_Address5
-        self.Sensor_Streaming_Data = self.Sensor_Streaming_Write_Data1 + self.Sensor_Streaming_Write_Data2 + self.Sensor_Streaming_Write_Data3 + self.Sensor_Streaming_Write_Data4 + self.Sensor_Streaming_Write_Data5
+        self.Slave_str = 'H10' + self.Slave_sensor + self.Slave_eeprom + self.Slave_AFDriverIC + self.Slave_OISDriverIC
+        self.Sensor_Streaming_Resister = 'H11' + self.Sensor_Streaming_Resister_Address1 + self.Sensor_Streaming_Resister_Address2 + self.Sensor_Streaming_Resister_Address3 + self.Sensor_Streaming_Resister_Address4 + self.Sensor_Streaming_Resister_Address5
+        self.Sensor_Streaming_Data = 'H12'+ self.Sensor_Streaming_Write_Data1 + self.Sensor_Streaming_Write_Data2 + self.Sensor_Streaming_Write_Data3 + self.Sensor_Streaming_Write_Data4 + self.Sensor_Streaming_Write_Data5
 
 
     def Get_Sensor_ID(self):
